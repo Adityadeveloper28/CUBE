@@ -1,7 +1,14 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import { BarChart3, Box, Package, TrendingUp, Settings, Menu } from 'lucide-react';
-import Sidebar from '../components/Sidebar';
+import { Outlet, Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import {
+  BarChart3,
+  Box,
+  Package,
+  TrendingUp,
+  Settings,
+  Menu,
+} from "lucide-react";
+import Sidebar from "../components/Sidebar";
 
 const PrivateLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -9,36 +16,31 @@ const PrivateLayout = () => {
 
   const menuItems = [
     {
-      name: 'Dashboard',
-      path: '/dashboard',
-      icon: <BarChart3 size={20} />
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: <BarChart3 size={20} />,
     },
     {
-      name: 'Cube',
-      path: '/dashboard/cube',
+      name: "Cube",
+      path: "/dashboard/cube",
       icon: <Box size={20} />,
-     
     },
     {
-        name: 'Cuboid',
-        path: '/dashboard/cuboid',
-        icon: <Package size={20} />,
+      name: "Cuboid",
+      path: "/dashboard/cuboid",
+      icon: <Package size={20} />,
     },
+
     {
-      name: 'Cone',
-      path: '/dashboard/cone',
-      icon: <TrendingUp size={20} />
-    },
-    {
-      name: 'Settings',
-      path: '/dashboard/settings',
+      name: "Settings",
+      path: "/dashboard/settings",
       icon: <Settings size={20} />,
-       subItems: [
-        { name: 'Cube Management', path: '/dashboard/cube/management' },
-        { name: 'Cube Analytics', path: '/dashboard/cube/analytics' },
-        { name: 'Cube Settings', path: '/dashboard/cube/settings' }
-      ]
-    }
+      subItems: [
+        { name: "Cube Management", path: "/dashboard/cube/management" },
+        { name: "Cube Analytics", path: "/dashboard/cube/analytics" },
+        { name: "Cube Settings", path: "/dashboard/cube/settings" },
+      ],
+    },
   ];
 
   const toggleSidebar = () => {
@@ -46,15 +48,15 @@ const PrivateLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black flex">
+    <div className="min-h-screen bg-black flex ">
       {/* Sidebar */}
-      <Sidebar 
+      <Sidebar
         toggleSidebar={toggleSidebar}
         sidebarOpen={sidebarOpen}
         menuItems={menuItems}
         location={location}
       />
-    
+
       {/* Main content */}
       <div className="flex-1 lg:ml-0">
         {/* Header with hamburger menu */}
@@ -71,7 +73,7 @@ const PrivateLayout = () => {
           </div>
         </header>
 
-        <main className="p-6 bg-black">
+        <main className="p-6 bg-black overflow-y-auto max-h-screen">
           <Outlet />
         </main>
       </div>
