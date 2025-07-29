@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Copy, Check } from "lucide-react";
 
-function Cube() {
-  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+function Cone() {
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [copied, setCopied] = useState(false);
 
   const handleMouseMove = (e) => {
@@ -13,35 +13,35 @@ function Cube() {
     const deltaY = clientY - centerY;
     const rotateX = deltaX * 0.2;
     const rotateY = deltaY * 0.2;
-    setRotate({ x: rotateX, y: rotateY });
+    setRotation({ x: rotateX, y: rotateY });
   };
 
   // Manual rotation functions
   const rotateUp = () => {
-    setRotate((prev) => ({ ...prev, x: prev.x - 30 }));
+    setRotation((prev) => ({ ...prev, x: prev.x - 30 }));
   };
 
   const rotateDown = () => {
-    setRotate((prev) => ({ ...prev, x: prev.x + 30 }));
+    setRotation((prev) => ({ ...prev, x: prev.x + 30 }));
   };
 
   const rotateLeft = () => {
-    setRotate((prev) => ({ ...prev, y: prev.y - 30 }));
+    setRotation((prev) => ({ ...prev, y: prev.y - 30 }));
   };
 
   const rotateRight = () => {
-    setRotate((prev) => ({ ...prev, y: prev.y + 30 }));
+    setRotation((prev) => ({ ...prev, y: prev.y + 30 }));
   };
 
   const resetRotation = () => {
-    setRotate({ x: 0, y: 0 });
+    setRotation({ x: 0, y: 0 });
   };
 
   const copyToClipboard = async () => {
     const codeText = `import React, { useState } from "react";
 
-function Cube() {
-  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+function Cone() {
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e) => {
     const { clientX, clientY } = e;
@@ -51,7 +51,7 @@ function Cube() {
     const deltaY = clientY - centerY;
     const rotateX = deltaX * 0.2;
     const rotateY = deltaY * 0.2;
-    setRotate({ x: rotateX, y: rotateY });
+    setRotation({ x: rotateX, y: rotateY });
   };
 
   return (
@@ -64,24 +64,24 @@ function Cube() {
         className="relative w-40 h-40"
         style={{
           transformStyle: "preserve-3d",
-          transform: \`rotateX(\${rotate.x}deg) rotateY(\${rotate.y}deg)\`,
+          transform: \`rotateX(\${rotation.x}deg) rotateY(\${rotation.y}deg)\`,
           transition: "transform 0.1s linear",
         }}
       >
-        {/* Cube faces with high contrast colors */}
+        {/* 3D Cone with CSS */}
       </div>
     </div>
   );
 }
 
-export default Cube;`;
+export default Cone;`;
 
     try {
       await navigator.clipboard.writeText(codeText);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy: ', err);
+      console.error("Failed to copy: ", err);
     }
   };
 
@@ -95,91 +95,141 @@ export default Cube;`;
           className="relative flex w-full h-[400px] items-center justify-center border border-gray-300"
           onMouseMove={handleMouseMove}
         >
-          {/* Cube */}
+          {/* 3D Cone */}
           <div
             className="relative w-40 h-40"
             style={{
               transformStyle: "preserve-3d",
-              transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg)`,
+              transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
               transition: "transform 0.1s linear",
             }}
           >
-            {/* Front */}
-            <div
-              className="absolute w-40 h-40 flex items-center justify-center text-white border border-white"
-              style={{ 
-                transform: "translateZ(80px)",
-                background: "linear-gradient(135deg, #3b82f6 0%, #1e40af 50%, #1d4ed8 100%)",
-                boxShadow: "inset 0 0 20px rgba(255,255,255,0.2), 0 0 20px rgba(59,130,246,0.3)"
-              }}
-            >
-              front
-            </div>
+            {/* Cone Body - Using multiple sections to create cone shape */}
+            {Array.from({ length: 8 }, (_, i) => {
+              const angle = (360 / 8) * i;
+              const scale = 1 - i * 0.1;
+              return (
+                <div
+                  key={i}
+                  className="absolute border border-white "
+                  style={{
+                    width: `${160 * scale}px`,
+                    height: "20px",
+                    left: "50%",
+                    top: `${i * 20}px`,
+                    transform: `translateX(-50%) rotateY(${angle}deg) translateZ(${
+                      80 * scale
+                    }px)`,
+                    background: `linear-gradient(135deg, hsl(${
+                      220 + i * 10
+                    }, 70%, ${60 - i * 5}%) 0%, hsl(${220 + i * 10}, 70%, ${
+                      40 - i * 3
+                    }%) 100%)`,
+                    boxShadow:
+                      "inset 0 0 10px rgba(255,255,255,0.2), 0 0 10px rgba(59,130,246,0.3)",
+                  }}
+                />
+              );
+            })}
 
-            {/* Back */}
             <div
-              className="absolute w-40 h-40 flex items-center justify-center text-black border border-white"
-              style={{ 
-                transform: "rotateY(180deg) translateZ(80px)",
-                background: "linear-gradient(135deg, #f97316 0%, #ea580c 50%, #dc2626 100%)",
-                boxShadow: "inset 0 0 20px rgba(255,255,255,0.2), 0 0 20px rgba(249,115,22,0.3)"
+              className="absolute border border-white"
+              style={{
+                width: "50px",
+                height: "50px",
+                left: "50%",
+                top: "50%",
+                transform: "translateX(-50%) translateY(-50%) translateZ(25px)",
+                background:
+                  "linear-gradient(135deg, #3b82f6 0%, #1e40af 50%, #1d4ed8 100%)",
+                boxShadow: "inset 0 0 15px rgba(255,255,255,0.2)",
               }}
-            >
-              back
-            </div>
+            />
 
-            {/* Top */}
+            {/* Back face */}
             <div
-              className="absolute w-40 h-40 flex items-center justify-center text-black border border-white"
-              style={{ 
-                transform: "rotateX(90deg) translateZ(80px)",
-                background: "linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%)",
-                boxShadow: "inset 0 0 20px rgba(255,255,255,0.2), 0 0 20px rgba(6,182,212,0.3)"
+              className="absolute border border-white"
+              style={{
+                width: "50px",
+                height: "50px",
+                left: "50%",
+                top: "50%",
+                transform:
+                  "translateX(-50%) translateY(-50%) translateZ(-25px) rotateY(180deg)",
+                background:
+                  "linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e3a8a 100%)",
+                boxShadow: "inset 0 0 15px rgba(255,255,255,0.2)",
               }}
-            >
-              top
-            </div>
+            />
 
-            {/* Bottom */}
+            {/* Right face */}
             <div
-              className="absolute w-40 h-40 flex items-center justify-center text-white border border-white"
-              style={{ 
-                transform: "rotateX(-90deg) translateZ(80px)",
-                background: "linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #b91c1c 100%)",
-                boxShadow: "inset 0 0 20px rgba(255,255,255,0.2), 0 0 20px rgba(239,68,68,0.3)"
+              className="absolute border border-white"
+              style={{
+                width: "50px",
+                height: "50px",
+                left: "50%",
+                top: "50%",
+                transform:
+                  "translateX(-50%) translateY(-50%) rotateY(90deg) translateZ(25px)",
+                background:
+                  "linear-gradient(135deg, #1d4ed8 0%, #1e3a8a 50%, #312e81 100%)",
+                boxShadow: "inset 0 0 15px rgba(255,255,255,0.2)",
               }}
-            >
-              bottom
-            </div>
+            />
 
-            {/* Left */}
+            {/* Left face */}
             <div
-              className="absolute w-40 h-40 flex items-center justify-center text-black border border-white"
-              style={{ 
-                transform: "rotateY(-90deg) translateZ(80px)",
-                background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%)",
-                boxShadow: "inset 0 0 20px rgba(255,255,255,0.2), 0 0 20px rgba(251,191,36,0.3)"
+              className="absolute border border-white"
+              style={{
+                width: "50px",
+                height: "50px",
+                left: "50%",
+                top: "50%",
+                transform:
+                  "translateX(-50%) translateY(-50%) rotateY(-90deg) translateZ(25px)",
+                background:
+                  "linear-gradient(135deg, #1e3a8a 0%, #312e81 50%, #1e1b4b 100%)",
+                boxShadow: "inset 0 0 15px rgba(255,255,255,0.2)",
               }}
-            >
-              left
-            </div>
+            />
 
-            {/* Right */}
+            {/* Top face */}
             <div
-              className="absolute w-40 h-40 flex items-center justify-center text-white border border-white"
-              style={{ 
-                transform: "rotateY(90deg) translateZ(80px)",
-                background: "linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%)",
-                boxShadow: "inset 0 0 20px rgba(255,255,255,0.2), 0 0 20px rgba(16,185,129,0.3)"
+              className="absolute border border-white"
+              style={{
+                width: "50px",
+                height: "50px",
+                left: "50%",
+                top: "50%",
+                transform:
+                  "translateX(-50%) translateY(-50%) rotateX(90deg) translateZ(25px)",
+                background:
+                  "linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%)",
+                boxShadow: "inset 0 0 15px rgba(255,255,255,0.2)",
               }}
-            >
-              right
-            </div>
+            />
+
+            {/* Bottom face */}
+            <div
+              className="absolute border border-white"
+              style={{
+                width: "50px",
+                height: "50px",
+                left: "50%",
+                top: "50%",
+                transform:
+                  "translateX(-50%) translateY(-50%) rotateX(-90deg) translateZ(60px)",
+                background:
+                  "linear-gradient(135deg, #312e81 0%, #1e1b4b 50%, #0f0f23 100%)",
+                boxShadow: "inset 0 0 15px rgba(255,255,255,0.2)",
+              }}
+            />
           </div>
         </div>
 
         {/* Control Buttons */}
-        <div className="absolute bottom-50 right-4 bg-gray-950 p-5 rounded-full  border-white border">
+        <div className="absolute bottom-50 right-4 bg-gray-950 p-5 rounded-full border-white border">
           <div className="flex flex-col items-center space-y-2">
             {/* Up Button */}
             <button
@@ -292,7 +342,7 @@ export default Cube;`;
       </div>
 
       {/* Code display section - macOS style */}
-      <div className="max-w-screen mx-auto  bg-gray-900 rounded-lg border border-gray-700 shadow-2xl">
+      <div className="max-w-screen mx-auto bg-gray-900 rounded-lg border border-gray-700 shadow-2xl">
         {/* macOS window header */}
         <div className="flex items-center justify-between bg-gray-800 px-4 py-3 rounded-t-lg border-b border-gray-600">
           <div className="flex items-center space-x-2">
@@ -302,9 +352,11 @@ export default Cube;`;
               <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
               <div className="w-3 h-3 bg-green-500 rounded-full"></div>
             </div>
-            <span className="ml-4 text-gray-300 text-sm font-medium">Cube.jsx</span>
+            <span className="ml-4 text-gray-300 text-sm font-medium">
+              Cone.jsx
+            </span>
           </div>
-          
+
           <button
             onClick={copyToClipboard}
             className="flex items-center space-x-2 px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-md transition-colors duration-200 text-sm"
@@ -330,8 +382,8 @@ export default Cube;`;
             <code className="text-green-400 font-mono">
               {`import React, { useState } from "react";
 
-function Cube() {
-  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+function Cone() {
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e) => {
     const { clientX, clientY } = e;
@@ -341,7 +393,7 @@ function Cube() {
     const deltaY = clientY - centerY;
     const rotateX = deltaX * 0.2;
     const rotateY = deltaY * 0.2;
-    setRotate({ x: rotateX, y: rotateY });
+    setRotation({ x: rotateX, y: rotateY });
   };
 
   return (
@@ -354,17 +406,17 @@ function Cube() {
         className="relative w-40 h-40"
         style={{
           transformStyle: "preserve-3d",
-          transform: \`rotateX(\${rotate.x}deg) rotateY(\${rotate.y}deg)\`,
+          transform: \`rotateX(\${rotation.x}deg) rotateY(\${rotation.y}deg)\`,
           transition: "transform 0.1s linear",
         }}
       >
-        {/* Cube faces with mirror-like appearance */}
+        {/* 3D Cone with mirror-like appearance */}
       </div>
     </div>
   );
 }
 
-export default Cube;`}
+export default Cone;`}
             </code>
           </pre>
         </div>
@@ -373,4 +425,4 @@ export default Cube;`}
   );
 }
 
-export default Cube;
+export default Cone;
